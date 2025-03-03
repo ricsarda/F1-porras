@@ -83,17 +83,17 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
 st.title("🏎️ F1 Fantasy Predictor")
 st.subheader("Registra tu predicción para la próxima sesión")
 
-jugador = st.selectbox("Selecciona tu nombre", ["Jugador 1", "Jugador 2", "Jugador 3"])
+jugador = st.selectbox("Selecciona tu nombre", ["Maggi", "Pié", "Ric"])
 gran_premio = st.selectbox("Selecciona el Gran Premio", list(grandes_premios.keys()))
 tipo = st.radio("Tipo de sesión", ["Clasificación", "Sprint", "Carrera"])
 
 # Verificar si el GP seleccionado tiene sprint
 if tipo == "Sprint" and not grandes_premios[gran_premio]["sprint"]:
-    st.warning(f"El Gran Premio de {gran_premio} no tiene carrera sprint. Por favor, selecciona otro tipo de sesión.")
+    st.warning(f"El Gran Premio de {gran_premio} no tiene carrera sprint, tontito")
 else:
-    p1 = st.selectbox("Piloto en P1", pilotos)
-    p2 = st.selectbox("Piloto en P2", pilotos, index=1)
-    p3 = st.selectbox("Piloto en P3", pilotos, index=2)
+    p1 = st.selectbox("P1", pilotos)
+    p2 = st.selectbox("PP2", pilotos, index=1)
+    p3 = st.selectbox("P3", pilotos, index=2)
 
     if st.button("Guardar"):
         save_prediction(jugador, gran_premio, tipo, p1, p2, p3)
