@@ -63,25 +63,25 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
 
 # Interfaz de predicción
 st.title("🏎️ F1 Fantasy Predictor")
-st.subheader("Registra tu predicción para la próxima sesión")
+st.subheader("And i'ts lights out")
 
-jugador = st.selectbox("Selecciona tu nombre", ["Maggi", "Pié", "Ric"])
-gran_premio = st.selectbox("Selecciona el Gran Premio", list(grandes_premios.keys()))
-tipo = st.radio("Tipo de sesión", ["Clasificación", "Clasificación Sprint", "Sprint", "Carrera"])
+jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
+gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
+tipo = st.radio("Sesión", ["Clasificación", "Clasificación Sprint", "Sprint", "Carrera"])
 
 # Verificar si el GP seleccionado tiene sprint
 disabled_sprint = tipo in ["Clasificación Sprint", "Sprint"] and not grandes_premios[gran_premio]["sprint"]
 if disabled_sprint:
-    st.warning(f"El Gran Premio de {gran_premio} no tiene sesión de {tipo}. Por favor, selecciona otro tipo de sesión.")
+    st.warning(f"El Gran Premio de {gran_premio} no tiene sesión de {tipo} tontito")
 else:
-    p1 = st.selectbox("Piloto en P1", pilotos)
-    p2 = st.selectbox("Piloto en P2", pilotos, index=1)
-    p3 = st.selectbox("Piloto en P3", pilotos, index=2)
+    p1 = st.selectbox("P1", pilotos)
+    p2 = st.selectbox("P2", pilotos, index=1)
+    p3 = st.selectbox("P3", pilotos, index=2)
 
-    if st.button("Guardar Predicción"):
+    if st.button("Save"):
         save_prediction(jugador, gran_premio, tipo, p1, p2, p3)
-        st.success("Predicción guardada con éxito!")
+        st.success("Ufff")
 
 # Mostrar tabla de predicciones actuales
-st.subheader("📊 Predicciones registradas")
+st.subheader("📊 Clasificación")
 st.dataframe(data["predictions"])
