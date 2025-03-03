@@ -92,7 +92,7 @@ if tipo == "Sprint" and not grandes_premios[gran_premio]["sprint"]:
     st.warning(f"El Gran Premio de {gran_premio} no tiene carrera sprint, tontito")
 else:
     p1 = st.selectbox("P1", pilotos)
-    p2 = st.selectbox("PP2", pilotos, index=1)
+    p2 = st.selectbox("P2", pilotos, index=1)
     p3 = st.selectbox("P3", pilotos, index=2)
 
     if st.button("Guardar"):
