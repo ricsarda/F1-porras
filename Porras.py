@@ -63,7 +63,7 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
 
 # Interfaz de predicción
 st.title("🏎️ F1 Fantasy Predictor")
-st.subheader("And i'ts lights out")
+st.subheader("2025")
 
 jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
 gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
