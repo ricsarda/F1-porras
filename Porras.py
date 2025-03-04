@@ -62,7 +62,7 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
     data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
 
 # Interfaz de predicción
-st.title("🏎️ F1 Fantasy Predictor")
+st.title("🏎️ F1 Fantasy ")
 st.subheader("2025")
 
 jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
