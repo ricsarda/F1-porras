@@ -14,7 +14,7 @@ grandes_premios = {
     "STC Saudi Arabian Grand Prix": {"fecha": "2025-04-20", "sprint": False},
     "Crypto.com Miami Grand Prix": {"fecha": "2025-05-04", "sprint": True},
     "Qatar Airways Emilia-Romagna Grand Prix": {"fecha": "2025-05-18", "sprint": False},
-    "Grand Prix de Monaco": {"fecha": "2025-05-25", "sprint": False},
+    "Monaco Grand Prix": {"fecha": "2025-05-25", "sprint": False},
     "Pirelli Spanish Grand Prix": {"fecha": "2025-06-01", "sprint": False},
     "AWS Canadian Grand Prix": {"fecha": "2025-06-15", "sprint": False},
     "Qatar Airways Austrian Grand Prix": {"fecha": "2025-06-29", "sprint": True},
