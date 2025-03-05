@@ -40,7 +40,7 @@ pilotos = [
 ]
 
 # Cargar o inicializar datos
-@st.cache(allow_output_mutation=True)
+@st.cache_data
 def load_data():
     return {"predictions": pd.DataFrame(columns=["Jugador", "Gran Premio", "Tipo", "P1", "P2", "P3", "Fecha"]),
             "scores": pd.DataFrame(columns=["Jugador", "Puntos Totales"])}
