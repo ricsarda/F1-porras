@@ -66,10 +66,10 @@ st.subheader("2025")
 
 jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
 gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
-tipo = st.radio("Sesión", ["Clasificación", "Clasificación Sprint", "Sprint", "Carrera"])
+tipo = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
 
 # Verificar si el GP seleccionado tiene sprint
-disabled_sprint = tipo in ["Clasificación Sprint", "Sprint"] and not grandes_premios[gran_premio]["sprint"]
+disabled_sprint = tipo in ["Qualy Sprint", "Sprint"] and not grandes_premios[gran_premio]["sprint"]
 if disabled_sprint:
     st.warning(f"El Gran Premio de {gran_premio} no tiene sesión de {tipo} tontito")
 else:
