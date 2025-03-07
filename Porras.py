@@ -104,13 +104,14 @@ if st.checkbox("Ingresar resultados oficiales"):
         st.success("Resultados guardados correctamente!")
 
 if st.button("Save Prediction"):
-    save_prediction(jugador, gran_premio, tipo, "P1", "P2", "P3")
+    save_prediction(jugador, gran_premio, tipo, p1, p2, p3)
     st.success("Predicción guardada correctamente!")
 
 # Mostrar tabla de predicciones actuales
-st.subheader("📊 Predicciones")
+st.subheader("Porra")
 st.dataframe(data["predictions"])
 
 # Mostrar resultados oficiales
 st.subheader("🏁 Resultados Oficiales")
 st.dataframe(data["results"])
+
