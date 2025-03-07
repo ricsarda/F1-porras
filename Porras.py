@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import os
 
 # Configuración inicial
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
@@ -38,13 +39,23 @@ pilotos = [
     "Alexander Albon", "Nico Hülkenberg", "Esteban Ocon", "Oliver Bearman", "Carlos Sainz", "Franco Colapinto"
 ]
 
+# Archivos CSV para almacenamiento persistente
+PREDICTIONS_FILE = "predictions.csv"
+RESULTS_FILE = "results.csv"
+
 # Cargar o inicializar datos
-@st.cache_data
 def load_data():
-    return {
-        "predictions": pd.DataFrame(columns=["Jugador", "Gran Premio", "Tipo", "P1", "P2", "P3", "Fecha"]),
-        "results": pd.DataFrame(columns=["Gran Premio", "Tipo", "P1", "P2", "P3"])
-    }
+    if os.path.exists(PREDICTIONS_FILE):
+        predictions = pd.read_csv(PREDICTIONS_FILE)
+    else:
+        predictions = pd.DataFrame(columns=["Jugador", "Gran Premio", "Tipo", "P1", "P2", "P3", "Fecha"])
+    
+    if os.path.exists(RESULTS_FILE):
+        results = pd.read_csv(RESULTS_FILE)
+    else:
+        results = pd.DataFrame(columns=["Gran Premio", "Tipo", "P1", "P2", "P3"])
+    
+    return {"predictions": predictions, "results": results}
 
 data = load_data()
 
@@ -61,6 +72,7 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
         "Fecha": [now]
     })
     data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
+    data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
 
 # Función para ingresar los resultados reales
 def save_results(gran_premio, tipo, p1, p2, p3):
@@ -72,6 +84,7 @@ def save_results(gran_premio, tipo, p1, p2, p3):
         "P3": [p3]
     })
     data["results"] = pd.concat([data["results"], nuevo_resultado], ignore_index=True)
+    data["results"].to_csv(RESULTS_FILE, index=False)
 
 # Interfaz de predicción
 st.title("🏎️ F1 Fantasy ")
