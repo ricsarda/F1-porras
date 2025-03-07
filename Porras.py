@@ -43,8 +43,7 @@ pilotos = [
 def load_data():
     return {
         "predictions": pd.DataFrame(columns=["Jugador", "Gran Premio", "Tipo", "P1", "P2", "P3", "Fecha"]),
-        "results": pd.DataFrame(columns=["Gran Premio", "Tipo", "P1", "P2", "P3"]),
-        "scores": pd.DataFrame(columns=["Jugador", "Puntos Totales"])
+        "results": pd.DataFrame(columns=["Gran Premio", "Tipo", "P1", "P2", "P3"])
     }
 
 data = load_data()
@@ -63,7 +62,7 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
     })
     data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
 
-# Función para registrar los resultados oficiales
+# Función para ingresar los resultados reales
 def save_results(gran_premio, tipo, p1, p2, p3):
     nuevo_resultado = pd.DataFrame({
         "Gran Premio": [gran_premio],
@@ -74,23 +73,6 @@ def save_results(gran_premio, tipo, p1, p2, p3):
     })
     data["results"] = pd.concat([data["results"], nuevo_resultado], ignore_index=True)
 
-# Función para calcular puntuaciones
-def calculate_scores():
-    scores = {}
-    for _, pred in data["predictions"].iterrows():
-        result = data["results"][
-            (data["results"]["Gran Premio"] == pred["Gran Premio"]) & (data["results"]["Tipo"] == pred["Tipo"])
-        ]
-        if not result.empty:
-            result = result.iloc[0]
-            points = sum([6 if pred[f"P{i+1}"] == result[f"P{i+1}"] else (2 if pred[f"P{i+1}"] in result.values else 0) for i in range(3)])
-            if points == 18:
-                points += 10  # Bonus por acertar todo
-            if pred["Tipo"] == "Sprint":
-                points /= 2
-            scores[pred["Jugador"]] = scores.get(pred["Jugador"], 0) + points
-    data["scores"] = pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
-
 # Interfaz de predicción
 st.title("🏎️ F1 Fantasy ")
 st.subheader("2025")
@@ -99,9 +81,23 @@ jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
 gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
 tipo = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
 
-if st.button("Calcular Puntos"):
-    calculate_scores()
-    st.success("Puntuaciones actualizadas")
+if st.checkbox("Ingresar resultados oficiales"):
+    st.subheader("Resultados Oficiales")
+    p1_res = st.selectbox("P1", pilotos, key="p1_res")
+    p2_res = st.selectbox("P2", pilotos, key="p2_res")
+    p3_res = st.selectbox("P3", pilotos, key="p3_res")
+    if st.button("Guardar Resultados"):
+        save_results(gran_premio, tipo, p1_res, p2_res, p3_res)
+        st.success("Resultados guardados correctamente!")
 
-st.subheader("📊 Clasificación de puntos")
-st.dataframe(data["scores"])
+if st.button("Save Prediction"):
+    save_prediction(jugador, gran_premio, tipo, "P1", "P2", "P3")
+    st.success("Predicción guardada correctamente!")
+
+# Mostrar tabla de predicciones actuales
+st.subheader("📊 Predicciones")
+st.dataframe(data["predictions"])
+
+# Mostrar resultados oficiales
+st.subheader("🏁 Resultados Oficiales")
+st.dataframe(data["results"])
