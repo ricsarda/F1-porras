@@ -70,54 +70,51 @@ def load_data():
 
 data = load_data()
 
-# Función para registrar una predicción
-def save_prediction(jugador, gran_premio, Sesión, p1, p2, p3):
-    now = datetime.datetime.now()
-    nueva_prediccion = pd.DataFrame({
-        "Jugador": [jugador],
-        "Gran Premio": [gran_premio],
-        "Sesión": [Sesión],
-        "P1": [p1],
-        "P2": [p2],
-        "P3": [p3],
-        "Fecha": [now]
-    })
-    data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
-    data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
+# Interfaz principal
+st.title("🏎️ F1 Fantasy 2025")
+menu = st.sidebar.radio("Selecciona una opción", ["Predicción de Gran Premio", "Predicción Global del Campeonato", "Resultados y Puntuaciones"])
 
-# Función para registrar la predicción global
-def save_global_prediction(jugador, categoria, p1, p2, p3):
-    nueva_prediccion = pd.DataFrame({
-        "Jugador": [jugador],
-        "Categoría": [categoria],
-        "P1": [p1],
-        "P2": [p2],
-        "P3": [p3]
-    })
-    data["global_predictions"] = pd.concat([data["global_predictions"], nueva_prediccion], ignore_index=True)
-    data["global_predictions"].to_csv(GLOBAL_PREDICTIONS_FILE, index=False)
+if menu == "Predicción de Gran Premio":
+    st.subheader("Registrar Predicción de Gran Premio")
+    jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
+    gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
+    sesion = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
+    
+    p1 = st.selectbox("P1", pilotos)
+    p2 = st.selectbox("P2", pilotos)
+    p3 = st.selectbox("P3", pilotos)
+    
+    if st.button("Guardar Predicción"):
+        save_prediction(jugador, gran_premio, sesion, p1, p2, p3)
+        st.success("Predicción guardada correctamente!")
+    
+    st.subheader("📊 Predicciones de Gran Premio")
+    st.dataframe(data["predictions"])
 
-# Interfaz de predicción
-st.title("🏎️ F1 Fantasy ")
-st.subheader("2025")
+elif menu == "Predicción Global del Campeonato":
+    st.subheader("Predicción Global del Campeonato")
+    jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
+    categoria = st.radio("Categoría", ["Campeonato de Pilotos", "Campeonato de Constructores"], key="global_categoria")
+    
+    if categoria == "Campeonato de Pilotos":
+        p1 = st.selectbox("P1", pilotos, key="global_p1")
+        p2 = st.selectbox("P2", pilotos, key="global_p2")
+        p3 = st.selectbox("P3", pilotos, key="global_p3")
+    else:
+        p1 = st.selectbox("P1", equipos, key="global_p1")
+        p2 = st.selectbox("P2", equipos, key="global_p2")
+        p3 = st.selectbox("P3", equipos, key="global_p3")
+    
+    if st.button("Guardar Predicción Global"):
+        save_global_prediction(jugador, categoria, p1, p2, p3)
+        st.success("Predicción global guardada correctamente!")
+    
+    st.subheader("📊 Predicciones Globales")
+    st.dataframe(data["global_predictions"])
 
-# Sección de predicción global del campeonato
-st.subheader("Predicción Global del Campeonato")
-jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
-categoria = st.radio("Categoría", ["Campeonato de Pilotos", "Campeonato de Constructores"], key="global_categoria")
-
-if categoria == "Campeonato de Pilotos":
-    p1 = st.selectbox("P1", pilotos, key="global_p1")
-    p2 = st.selectbox("P2", pilotos, key="global_p2")
-    p3 = st.selectbox("P3", pilotos, key="global_p3")
-else:
-    p1 = st.selectbox("P1", equipos, key="global_p1")
-    p2 = st.selectbox("P2", equipos, key="global_p2")
-    p3 = st.selectbox("P3", equipos, key="global_p3")
-
-if st.button("Guardar Predicción Global"):
-    save_global_prediction(jugador, categoria, p1, p2, p3)
-    st.success("Predicción global guardada correctamente!")
-
-st.subheader("📊 Predicciones Globales")
-st.dataframe(data["global_predictions"])
+elif menu == "Resultados y Puntuaciones":
+    st.subheader("🏁 Resultados Oficiales")
+    st.dataframe(data["results"])
+    
+    st.subheader("📊 Clasificación de Puntos")
+    # Aquí se podría agregar una función para calcular puntos y mostrar un ranking
