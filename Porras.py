@@ -48,24 +48,24 @@ def load_data():
     if os.path.exists(PREDICTIONS_FILE):
         predictions = pd.read_csv(PREDICTIONS_FILE)
     else:
-        predictions = pd.DataFrame(columns=["Jugador", "Gran Premio", "Tipo", "P1", "P2", "P3", "Fecha"])
+        predictions = pd.DataFrame(columns=["Jugador", "Gran Premio", "Sesión", "P1", "P2", "P3", "Fecha"])
     
     if os.path.exists(RESULTS_FILE):
         results = pd.read_csv(RESULTS_FILE)
     else:
-        results = pd.DataFrame(columns=["Gran Premio", "Tipo", "P1", "P2", "P3"])
+        results = pd.DataFrame(columns=["Gran Premio", "Sesión", "P1", "P2", "P3"])
     
     return {"predictions": predictions, "results": results}
 
 data = load_data()
 
 # Función para registrar una predicción
-def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
+def save_prediction(jugador, gran_premio, Sesión, p1, p2, p3):
     now = datetime.datetime.now()
     nueva_prediccion = pd.DataFrame({
         "Jugador": [jugador],
         "Gran Premio": [gran_premio],
-        "Tipo": [tipo],
+        "Sesión": [Sesión],
         "P1": [p1],
         "P2": [p2],
         "P3": [p3],
@@ -75,10 +75,10 @@ def save_prediction(jugador, gran_premio, tipo, p1, p2, p3):
     data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
 
 # Función para ingresar los resultados reales
-def save_results(gran_premio, tipo, p1, p2, p3):
+def save_results(gran_premio, Sesión, p1, p2, p3):
     nuevo_resultado = pd.DataFrame({
         "Gran Premio": [gran_premio],
-        "Tipo": [tipo],
+        "Sesión": [Sesión],
         "P1": [p1],
         "P2": [p2],
         "P3": [p3]
@@ -92,7 +92,7 @@ st.subheader("2025")
 
 jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
 gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
-tipo = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
+Sesión = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
 
 if st.checkbox("Ingresar resultados oficiales"):
     st.subheader("Resultados Oficiales")
@@ -100,7 +100,7 @@ if st.checkbox("Ingresar resultados oficiales"):
     p2_res = st.selectbox("P2", pilotos, key="p2_res")
     p3_res = st.selectbox("P3", pilotos, key="p3_res")
     if st.button("Guardar Resultados"):
-        save_results(gran_premio, tipo, p1_res, p2_res, p3_res)
+        save_results(gran_premio, Sesión, p1_res, p2_res, p3_res)
         st.success("Resultados guardados correctamente!")
 
 p1 = st.selectbox("P1", pilotos, key="p1_pred")
@@ -108,7 +108,7 @@ p2 = st.selectbox("P2", pilotos, key="p2_pred")
 p3 = st.selectbox("P3", pilotos, key="p3_pred")
 
 if st.button("Save Prediction"):
-    save_prediction(jugador, gran_premio, tipo, p1, p2, p3)
+    save_prediction(jugador, gran_premio, Sesión, p1, p2, p3)
     st.success("Predicción guardada correctamente!")
 
 # Mostrar tabla de predicciones actuales
