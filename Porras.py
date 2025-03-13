@@ -103,15 +103,18 @@ if st.checkbox("Ingresar resultados oficiales"):
         save_results(gran_premio, tipo, p1_res, p2_res, p3_res)
         st.success("Resultados guardados correctamente!")
 
+p1 = st.selectbox("P1", pilotos, key="p1_pred")
+p2 = st.selectbox("P2", pilotos, key="p2_pred")
+p3 = st.selectbox("P3", pilotos, key="p3_pred")
+
 if st.button("Save Prediction"):
     save_prediction(jugador, gran_premio, tipo, p1, p2, p3)
     st.success("Predicción guardada correctamente!")
 
 # Mostrar tabla de predicciones actuales
-st.subheader("Porra")
+st.subheader("📊 Predicciones")
 st.dataframe(data["predictions"])
 
 # Mostrar resultados oficiales
 st.subheader("🏁 Resultados Oficiales")
 st.dataframe(data["results"])
-
