@@ -6,7 +6,7 @@ import os
 # Configuración inicial
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
-# Datos de Grandes Premios y Pilotos
+# Datos de Grandes Premios, Pilotos y Equipos
 grandes_premios = {
     "Rolex Australian Grand Prix": {"fecha": "2025-03-16", "sprint": False},
     "Heineken Chinese Grand Prix": {"fecha": "2025-03-23", "sprint": True},
@@ -39,9 +39,15 @@ pilotos = [
     "Alexander Albon", "Nico Hülkenberg", "Esteban Ocon", "Oliver Bearman", "Carlos Sainz", "Franco Colapinto"
 ]
 
+equipos = [
+    "Red Bull Racing", "Ferrari", "Mercedes", "McLaren", "Aston Martin",
+    "Alpine", "Haas", "Williams", "RB", "Sauber"
+]
+
 # Archivos CSV para almacenamiento persistente
 PREDICTIONS_FILE = "predictions.csv"
 RESULTS_FILE = "results.csv"
+GLOBAL_PREDICTIONS_FILE = "global_predictions.csv"
 
 # Cargar o inicializar datos
 def load_data():
@@ -55,7 +61,12 @@ def load_data():
     else:
         results = pd.DataFrame(columns=["Gran Premio", "Sesión", "P1", "P2", "P3"])
     
-    return {"predictions": predictions, "results": results}
+    if os.path.exists(GLOBAL_PREDICTIONS_FILE):
+        global_predictions = pd.read_csv(GLOBAL_PREDICTIONS_FILE)
+    else:
+        global_predictions = pd.DataFrame(columns=["Jugador", "Categoría", "P1", "P2", "P3"])
+    
+    return {"predictions": predictions, "results": results, "global_predictions": global_predictions}
 
 data = load_data()
 
@@ -74,47 +85,39 @@ def save_prediction(jugador, gran_premio, Sesión, p1, p2, p3):
     data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
     data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
 
-# Función para ingresar los resultados reales
-def save_results(gran_premio, Sesión, p1, p2, p3):
-    nuevo_resultado = pd.DataFrame({
-        "Gran Premio": [gran_premio],
-        "Sesión": [Sesión],
+# Función para registrar la predicción global
+def save_global_prediction(jugador, categoria, p1, p2, p3):
+    nueva_prediccion = pd.DataFrame({
+        "Jugador": [jugador],
+        "Categoría": [categoria],
         "P1": [p1],
         "P2": [p2],
         "P3": [p3]
     })
-    data["results"] = pd.concat([data["results"], nuevo_resultado], ignore_index=True)
-    data["results"].to_csv(RESULTS_FILE, index=False)
+    data["global_predictions"] = pd.concat([data["global_predictions"], nueva_prediccion], ignore_index=True)
+    data["global_predictions"].to_csv(GLOBAL_PREDICTIONS_FILE, index=False)
 
 # Interfaz de predicción
 st.title("🏎️ F1 Fantasy ")
 st.subheader("2025")
 
-jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
-gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
-Sesión = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
+# Sección de predicción global del campeonato
+st.subheader("Predicción Global del Campeonato")
+jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
+categoria = st.radio("Categoría", ["Campeonato de Pilotos", "Campeonato de Constructores"], key="global_categoria")
 
-if st.checkbox("Ingresar resultados oficiales"):
-    st.subheader("Resultados Oficiales")
-    p1_res = st.selectbox("P1", pilotos, key="p1_res")
-    p2_res = st.selectbox("P2", pilotos, key="p2_res")
-    p3_res = st.selectbox("P3", pilotos, key="p3_res")
-    if st.button("Guardar Resultados"):
-        save_results(gran_premio, Sesión, p1_res, p2_res, p3_res)
-        st.success("Resultados guardados correctamente!")
+if categoria == "Campeonato de Pilotos":
+    p1 = st.selectbox("P1", pilotos, key="global_p1")
+    p2 = st.selectbox("P2", pilotos, key="global_p2")
+    p3 = st.selectbox("P3", pilotos, key="global_p3")
+else:
+    p1 = st.selectbox("P1", equipos, key="global_p1")
+    p2 = st.selectbox("P2", equipos, key="global_p2")
+    p3 = st.selectbox("P3", equipos, key="global_p3")
 
-p1 = st.selectbox("P1", pilotos, key="p1_pred")
-p2 = st.selectbox("P2", pilotos, key="p2_pred")
-p3 = st.selectbox("P3", pilotos, key="p3_pred")
+if st.button("Guardar Predicción Global"):
+    save_global_prediction(jugador, categoria, p1, p2, p3)
+    st.success("Predicción global guardada correctamente!")
 
-if st.button("Save Prediction"):
-    save_prediction(jugador, gran_premio, Sesión, p1, p2, p3)
-    st.success("Predicción guardada correctamente!")
-
-# Mostrar tabla de predicciones actuales
-st.subheader("📊 Predicciones")
-st.dataframe(data["predictions"])
-
-# Mostrar resultados oficiales
-st.subheader("🏁 Resultados Oficiales")
-st.dataframe(data["results"])
+st.subheader("📊 Predicciones Globales")
+st.dataframe(data["global_predictions"])
