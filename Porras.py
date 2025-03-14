@@ -88,7 +88,7 @@ def calculate_scores():
             scores[pred["Jugador"]] = scores.get(pred["Jugador"], 0) + points
     return pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
 
-# Función para guardar una predicción
+# Función para guardar una predicción de Gran Premio
 def save_prediction(jugador, gran_premio, sesion, p1, p2, p3):
     nueva_prediccion = pd.DataFrame({
         "Jugador": [jugador],
@@ -101,6 +101,18 @@ def save_prediction(jugador, gran_premio, sesion, p1, p2, p3):
     })
     data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
     data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
+
+# Función para guardar una predicción global (Mundial)
+def save_global_prediction(jugador, categoria, p1, p2, p3):
+    nueva_prediccion_global = pd.DataFrame({
+        "Jugador": [jugador],
+        "Categoría": [categoria],
+        "P1": [p1],
+        "P2": [p2],
+        "P3": [p3]
+    })
+    data["global_predictions"] = pd.concat([data["global_predictions"], nueva_prediccion_global], ignore_index=True)
+    data["global_predictions"].to_csv(GLOBAL_PREDICTIONS_FILE, index=False)
 
 # Interfaz principal
 st.title("🏎️ F1 Fantasy 2025")
@@ -118,7 +130,7 @@ if menu == "Grandes Premios":
     
     if st.button("GUARDAR"):
         save_prediction(jugador, gran_premio, sesion, p1, p2, p3)
-        st.success("Guardado")
+        st.success("Predicción guardada")
     
     st.subheader("📊 Predicciones de Gran Premio")
     st.dataframe(data["predictions"])
@@ -137,14 +149,33 @@ elif menu == "Mundial":
         p2 = st.selectbox("P2", equipos, key="global_p2")
         p3 = st.selectbox("P3", equipos, key="global_p3")
     
-    if st.button("GUARDAR"):
+    if st.button("GUARDAR", key="global_guardar"):
         save_global_prediction(jugador, categoria, p1, p2, p3)
-        st.success("Guardado")
+        st.success("Predicción global guardada")
     
     st.subheader("📊 Mundial")
     st.dataframe(data["global_predictions"])
 
 elif menu == "Resultados y Puntos":
+    st.subheader("Introducir Resultados Reales")
+    result_gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()), key="result_gp")
+    result_sesion = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"], key="result_sesion")
+    result_p1 = st.selectbox("P1", pilotos, key="result_p1")
+    result_p2 = st.selectbox("P2", pilotos, key="result_p2")
+    result_p3 = st.selectbox("P3", pilotos, key="result_p3")
+    
+    if st.button("GUARDAR RESULTADOS", key="guardar_resultados"):
+        nueva_resultado = pd.DataFrame({
+            "Gran Premio": [result_gran_premio],
+            "Sesión": [result_sesion],
+            "P1": [result_p1],
+            "P2": [result_p2],
+            "P3": [result_p3]
+        })
+        data["results"] = pd.concat([data["results"], nueva_resultado], ignore_index=True)
+        data["results"].to_csv(RESULTS_FILE, index=False)
+        st.success("Resultados guardados")
+    
     st.subheader("📊 Clasificación")
     scores_df = calculate_scores()
     scores_df.to_csv(SCORES_FILE, index=False)
