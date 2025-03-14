@@ -71,37 +71,50 @@ def load_data():
 
 data = load_data()
 
+# Función para calcular puntuaciones automáticamente
+def calculate_scores():
+    scores = {}
+    for _, pred in data["predictions"].iterrows():
+        result = data["results"][
+            (data["results"]["Gran Premio"] == pred["Gran Premio"]) & (data["results"]["Sesión"] == pred["Sesión"])
+        ]
+        if not result.empty:
+            result = result.iloc[0]
+            points = sum([6 if pred[f"P{i+1}"] == result[f"P{i+1}"] else (2 if pred[f"P{i+1}"] in result.values else 0) for i in range(3)])
+            if points == 18:
+                points += 10  # Bonus por acertar todo
+            if pred["Sesión"] == "Sprint":
+                points /= 2
+            scores[pred["Jugador"]] = scores.get(pred["Jugador"], 0) + points
+    return pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
+
 # Interfaz principal
 st.title("🏎️ F1 Fantasy 2025")
-menu = st.sidebar.radio("Selecciona una opción", ["Predicción de Gran Premio", "Predicción Global del Campeonato", "Resultados y Puntuaciones"])
+menu = st.sidebar.radio("Panel", ["Grandes Premios", "F1 World Championship", "Resultados y Puntos"])
 
-if menu == "Predicción de Gran Premio":
-    st.subheader("Registrar Predicción de Gran Premio")
-    jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
-    gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
-    sesion = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
+if menu == "Mundial":
+    st.subheader("F1 World Championship")
+    jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
+    categoria = st.radio("Categoría", ["World Drivers Championships", "World Constructors Championshipp"], key="global_categoria")
     
-    p1 = st.selectbox("P1", pilotos)
-    p2 = st.selectbox("P2", pilotos)
-    p3 = st.selectbox("P3", pilotos)
+    if categoria == "World Drivers Championship":
+        p1 = st.selectbox("P1", pilotos, key="global_p1")
+        p2 = st.selectbox("P2", pilotos, key="global_p2")
+        p3 = st.selectbox("P3", pilotos, key="global_p3")
+    else:
+        p1 = st.selectbox("P1", equipos, key="global_p1")
+        p2 = st.selectbox("P2", equipos, key="global_p2")
+        p3 = st.selectbox("P3", equipos, key="global_p3")
     
-    if st.button("Guardar Predicción"):
-        save_prediction(jugador, gran_premio, sesion, p1, p2, p3)
-        st.success("Predicción guardada correctamente!")
+    if st.button("World Constructors Championship"):
+        save_global_prediction(jugador, categoria, p1, p2, p3)
+        st.success("Guardar!")
     
-    st.subheader("📊 Predicciones de Gran Premio")
-    st.dataframe(data["predictions"])
+    st.subheader("📊 Mundial")
+    st.dataframe(data["global_predictions"])
 
-elif menu == "Resultados y Puntuaciones":
-    st.subheader("🏁 Resultados Oficiales")
-    st.dataframe(data["results"])
-    
-    st.subheader("📊 Clasificación de Puntos")
-    if st.button("Calcular Puntos"):
-        scores_df = calculate_scores()
-        scores_df.to_csv(SCORES_FILE, index=False)
-        st.success("Puntuaciones calculadas y guardadas correctamente!")
-    
-    if os.path.exists(SCORES_FILE):
-        scores_df = pd.read_csv(SCORES_FILE)
-        st.dataframe(scores_df)
+elif menu == "Resultados y Puntos":
+    st.subheader("📊 Clasificación")
+    scores_df = calculate_scores()
+    scores_df.to_csv(SCORES_FILE, index=False)
+    st.dataframe(scores_df)
