@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import datetime
 import os
-import streamlit-sortable
+from streamlit_sortable import sortable
 
 # Configuración inicial
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
