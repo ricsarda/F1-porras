@@ -331,17 +331,40 @@ elif menu == "Mundial":
     categoria = st.radio("Categoría", ["World Drivers Championship", "World Constructors Championship"], key="global_categoria")
     
     if categoria == "World Drivers Championship":
-        p1 = st.selectbox("P1", pilotos, key="global_p1")
-        p2 = st.selectbox("P2", pilotos, key="global_p2")
-        p3 = st.selectbox("P3", pilotos, key="global_p3")
-    else:
-        p1 = st.selectbox("P1", equipos, key="global_p1")
-        p2 = st.selectbox("P2", equipos, key="global_p2")
-        p3 = st.selectbox("P3", equipos, key="global_p3")
+        st.markdown("### Predicción del orden completo de **21 pilotos**")
+        available_drivers = pilotos.copy()
+        selected_drivers = []
+        
+        for i in range(1, 22):
+            driver_choice = st.selectbox(
+                f"Posición {i}",
+                available_drivers,
+                key=f"driver_pos_{i}"
+            )
+            selected_drivers.append(driver_choice)
+            available_drivers.remove(driver_choice)
+        
+        if st.button("GUARDAR", key="global_guardar_drivers"):
+            save_global_prediction(jugador, categoria, selected_drivers)
+            st.success("Predicción global (pilotos) guardada")
     
-    if st.button("GUARDAR", key="global_guardar"):
-        save_global_prediction(jugador, categoria, p1, p2, p3)
-        st.success("Predicción global guardada")
+    else:
+        st.markdown("### Predicción del orden completo de **10 equipos**")
+        available_teams = equipos.copy()
+        selected_teams = []
+        
+        for i in range(1, 11):
+            team_choice = st.selectbox(
+                f"Posición {i}",
+                available_teams,
+                key=f"team_pos_{i}"
+            )
+            selected_teams.append(team_choice)
+            available_teams.remove(team_choice)
+        
+        if st.button("GUARDAR", key="global_guardar_teams"):
+            save_global_prediction(jugador, categoria, selected_teams)
+            st.success("Predicción global (equipos) guardada")
     
     st.subheader("📊 Mundial")
     st.dataframe(data["global_predictions"])
