@@ -88,6 +88,20 @@ def calculate_scores():
             scores[pred["Jugador"]] = scores.get(pred["Jugador"], 0) + points
     return pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
 
+# Función para guardar una predicción
+def save_prediction(jugador, gran_premio, sesion, p1, p2, p3):
+    nueva_prediccion = pd.DataFrame({
+        "Jugador": [jugador],
+        "Gran Premio": [gran_premio],
+        "Sesión": [sesion],
+        "P1": [p1],
+        "P2": [p2],
+        "P3": [p3],
+        "Fecha": [datetime.datetime.now()]
+    })
+    data["predictions"] = pd.concat([data["predictions"], nueva_prediccion], ignore_index=True)
+    data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
+
 # Interfaz principal
 st.title("🏎️ F1 Fantasy 2025")
 menu = st.sidebar.radio("Panel", ["Grandes Premios", "Mundial", "Resultados y Puntos"])
