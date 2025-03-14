@@ -287,15 +287,37 @@ def save_prediction(jugador, gran_premio, sesion, p1, p2, p3):
     data["predictions"].to_csv(PREDICTIONS_FILE, index=False)
 
 # Función para guardar una predicción global (Mundial)
-def save_global_prediction(jugador, categoria, p1, p2, p3):
-    nueva_prediccion_global = pd.DataFrame({
-        "Jugador": [jugador],
-        "Categoría": [categoria],
-        "P1": [p1],
-        "P2": [p2],
-        "P3": [p3]
-    })
-    data["global_predictions"] = pd.concat([data["global_predictions"], nueva_prediccion_global], ignore_index=True)
+def save_global_prediction(jugador, categoria, posiciones):
+    """
+    Guarda la predicción global y elimina la predicción anterior si existe.
+    
+    posiciones es una lista con el orden completo:
+    - 21 pilotos para "World Drivers Championship"
+    - 10 equipos para "World Constructors Championship" (se rellenan con "" las posiciones sobrantes).
+    """
+    # Eliminar predicción previa del mismo jugador y categoría
+    data["global_predictions"] = data["global_predictions"][
+        ~((data["global_predictions"]["Jugador"] == jugador) & 
+          (data["global_predictions"]["Categoría"] == categoria))
+    ]
+    
+    # Construir la nueva fila de predicción
+    row_data = {"Jugador": jugador, "Categoría": categoria}
+    if categoria == "World Drivers Championship":
+        # Asumimos que la lista 'posiciones' tiene 21 elementos
+        for i in range(1, 22):
+            row_data[f"P{i}"] = posiciones[i-1]
+    else:
+        # Asumimos que la lista 'posiciones' tiene 10 elementos para equipos
+        for i in range(1, 11):
+            row_data[f"P{i}"] = posiciones[i-1]
+        # Rellenamos las posiciones 11 a 21 con cadenas vacías
+        for i in range(11, 22):
+            row_data[f"P{i}"] = ""
+    
+    # Convertir la fila a DataFrame y concatenarla al DataFrame global
+    df_row = pd.DataFrame([row_data])
+    data["global_predictions"] = pd.concat([data["global_predictions"], df_row], ignore_index=True)
     data["global_predictions"].to_csv(GLOBAL_PREDICTIONS_FILE, index=False)
 
 # Interfaz principal
