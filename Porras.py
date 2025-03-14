@@ -330,40 +330,22 @@ elif menu == "Mundial":
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
     categoria = st.radio("Categoría", ["World Drivers Championship", "World Constructors Championship"], key="global_categoria")
     
+    # Importamos el componente de drag and drop
+    from streamlit_sortable import sortable  # Asegúrate de instalar streamlit-sortable con pip
+    
     if categoria == "World Drivers Championship":
         st.markdown("### Predicción del orden completo de **21 pilotos**")
-        available_drivers = pilotos.copy()
-        selected_drivers = []
-        
-        for i in range(1, 22):
-            driver_choice = st.selectbox(
-                f"Posición {i}",
-                available_drivers,
-                key=f"driver_pos_{i}"
-            )
-            selected_drivers.append(driver_choice)
-            available_drivers.remove(driver_choice)
-        
+        # Se muestra la lista de pilotos que se puede reordenar
+        ordered_drivers = sortable(pilotos, key="drivers_order", height=500)
         if st.button("GUARDAR", key="global_guardar_drivers"):
-            save_global_prediction(jugador, categoria, selected_drivers)
+            # Guardamos únicamente los 21 primeros (en teoría, la lista tiene 21 elementos)
+            save_global_prediction(jugador, categoria, ordered_drivers[:21])
             st.success("Predicción global (pilotos) guardada")
-    
     else:
         st.markdown("### Predicción del orden completo de **10 equipos**")
-        available_teams = equipos.copy()
-        selected_teams = []
-        
-        for i in range(1, 11):
-            team_choice = st.selectbox(
-                f"Posición {i}",
-                available_teams,
-                key=f"team_pos_{i}"
-            )
-            selected_teams.append(team_choice)
-            available_teams.remove(team_choice)
-        
+        ordered_teams = sortable(equipos, key="teams_order", height=300)
         if st.button("GUARDAR", key="global_guardar_teams"):
-            save_global_prediction(jugador, categoria, selected_teams)
+            save_global_prediction(jugador, categoria, ordered_teams[:10])
             st.success("Predicción global (equipos) guardada")
     
     st.subheader("📊 Mundial")
