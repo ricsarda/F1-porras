@@ -92,12 +92,29 @@ def calculate_scores():
 st.title("🏎️ F1 Fantasy 2025")
 menu = st.sidebar.radio("Panel", ["Grandes Premios", "Mundial", "Resultados y Puntos"])
 
+if menu == "Grandes Premios":
+    st.subheader("Grand Prix weekend")
+    jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
+    gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
+    sesion = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
+    
+    p1 = st.selectbox("P1", pilotos)
+    p2 = st.selectbox("P2", pilotos)
+    p3 = st.selectbox("P3", pilotos)
+    
+    if st.button("GUARDAR"):
+        save_prediction(jugador, gran_premio, sesion, p1, p2, p3)
+        st.success("Guardado")
+    
+    st.subheader("📊 Predicciones de Gran Premio")
+    st.dataframe(data["predictions"])
+
 elif menu == "Mundial":
     st.subheader("F1 World Championship")
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
     categoria = st.radio("Categoría", ["World Drivers Championships", "World Constructors Championshipp"], key="global_categoria")
     
-    if categoria == "World Drivers Championship":
+    if categoria == "World Drivers & Constructors Championship":
         p1 = st.selectbox("P1", pilotos, key="global_p1")
         p2 = st.selectbox("P2", pilotos, key="global_p2")
         p3 = st.selectbox("P3", pilotos, key="global_p3")
@@ -106,9 +123,9 @@ elif menu == "Mundial":
         p2 = st.selectbox("P2", equipos, key="global_p2")
         p3 = st.selectbox("P3", equipos, key="global_p3")
     
-    if st.button("World Constructors Championship"):
+    if st.button("GUARDAR"):
         save_global_prediction(jugador, categoria, p1, p2, p3)
-        st.success("Guardar!")
+        st.success("Guardado")
     
     st.subheader("📊 Mundial")
     st.dataframe(data["global_predictions"])
