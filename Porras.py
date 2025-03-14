@@ -6,30 +6,197 @@ import os
 # Configuración inicial
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
-# Datos de Grandes Premios, Pilotos y Equipos
+# Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
-    "Rolex Australian Grand Prix": {"fecha": "2025-03-16", "sprint": False},
-    "Heineken Chinese Grand Prix": {"fecha": "2025-03-23", "sprint": True},
-    "Honda Japanese Grand Prix": {"fecha": "2025-04-06", "sprint": False},
-    "Gulf Air Bahrain Grand Prix": {"fecha": "2025-04-13", "sprint": False},
-    "STC Saudi Arabian Grand Prix": {"fecha": "2025-04-20", "sprint": False},
-    "Crypto.com Miami Grand Prix": {"fecha": "2025-05-04", "sprint": True},
-    "Qatar Airways Emilia-Romagna Grand Prix": {"fecha": "2025-05-18", "sprint": False},
-    "Monaco Grand Prix": {"fecha": "2025-05-25", "sprint": False},
-    "Pirelli Spanish Grand Prix": {"fecha": "2025-06-01", "sprint": False},
-    "AWS Canadian Grand Prix": {"fecha": "2025-06-15", "sprint": False},
-    "Qatar Airways Austrian Grand Prix": {"fecha": "2025-06-29", "sprint": True},
-    "Aramco British Grand Prix": {"fecha": "2025-07-06", "sprint": False},
-    "MSC Cruises Belgian Grand Prix": {"fecha": "2025-07-27", "sprint": True},
-    "Magyar Nagydíj Hungarian Grand Prix": {"fecha": "2025-08-03", "sprint": False},
-    "Heineken Dutch Grand Prix": {"fecha": "2025-08-31", "sprint": False},
-    "Pirelli Italian Grand Prix": {"fecha": "2025-09-07", "sprint": False},
-    "Singapore Airlines Singapore Grand Prix": {"fecha": "2025-09-21", "sprint": False},
-    "Lenovo United States Grand Prix": {"fecha": "2025-10-26", "sprint": True},
-    "Mexico City Grand Prix": {"fecha": "2025-11-02", "sprint": False},
-    "Lenovo São Paulo Grand Prix": {"fecha": "2025-11-16", "sprint": True},
-    "Qatar Airways Qatar Grand Prix": {"fecha": "2025-11-30", "sprint": True},
-    "Etihad Airways Abu Dhabi Grand Prix": {"fecha": "2025-12-07", "sprint": False}
+    "Rolex Australian Grand Prix": {
+        "fecha": "2025-03-16",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-03-15 06:00",
+            "Carrera": "2025-03-16 05:00"
+        }
+    },
+    "Heineken Chinese Grand Prix": {
+        "fecha": "2025-03-23",
+        "sprint": True,
+        "sesiones": {
+            "Qualy Sprint": "2025-03-21 08:30",
+            "Sprint": "2025-03-22 04:00",
+            "Qualy": "2025-03-22 08:00",
+            "Carrera": "2025-03-23 08:00"
+        }
+    },
+    "Honda Japanese Grand Prix": {
+        "fecha": "2025-04-06",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-04-05 08:00",
+            "Carrera": "2025-04-06 07:00"
+        }
+    },
+    "Gulf Air Bahrain Grand Prix": {
+        "fecha": "2025-04-13",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-04-12 18:00",
+            "Carrera": "2025-04-13 17:00"
+        }
+    },
+    "STC Saudi Arabian Grand Prix": {
+        "fecha": "2025-04-20",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-04-19 19:00",
+            "Carrera": "2025-04-20 19:00"
+        }
+    },
+    "Crypto.com Miami Grand Prix": {
+        "fecha": "2025-05-04",
+        "sprint": True,
+        "sesiones": {
+            "Qualy Sprint": "2025-05-02 22:30",
+            "Sprint": "2025-05-03 18:00",
+            "Qualy": "2025-05-03 22:00",
+            "Carrera": "2025-05-04 22:00"
+        }
+    },
+    "Qatar Airways Emilia-Romagna Grand Prix": {
+        "fecha": "2025-05-18",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-05-17 16:00",
+            "Carrera": "2025-05-18 15:00"
+        }
+    },
+    "Monaco Grand Prix": {
+        "fecha": "2025-05-25",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-05-24 16:00",
+            "Carrera": "2025-05-25 15:00"
+        }
+    },
+    "Pirelli Spanish Grand Prix": {
+        "fecha": "2025-06-01",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-05-31 16:00",
+            "Carrera": "2025-06-01 15:00"
+        }
+    },
+    "AWS Canadian Grand Prix": {
+        "fecha": "2025-06-15",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-06-14 22:00",
+            "Carrera": "2025-06-15 20:00"
+        }
+    },
+    "Qatar Airways Austrian Grand Prix": {
+        "fecha": "2025-06-29",
+        "sprint": True,  # Marcado como True en el código original
+        "sesiones": {
+            "Qualy": "2025-06-28 16:00",
+            "Carrera": "2025-06-29 15:00"
+            # No se han proporcionado datos para "Qualy Sprint" o "Sprint"
+        }
+    },
+    "Aramco British Grand Prix": {
+        "fecha": "2025-07-06",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-07-05 16:00",
+            "Carrera": "2025-07-06 16:00"
+        }
+    },
+    "MSC Cruises Belgian Grand Prix": {
+        "fecha": "2025-07-27",
+        "sprint": True,
+        "sesiones": {
+            "Qualy Sprint": "2025-07-25 16:30",
+            "Sprint": "2025-07-26 12:00",
+            "Qualy": "2025-07-26 16:00",
+            "Carrera": "2025-07-27 15:00"
+        }
+    },
+    "Magyar Nagydíj Hungarian Grand Prix": {
+        "fecha": "2025-08-03",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-08-02 16:00",
+            "Carrera": "2025-08-03 15:00"
+        }
+    },
+    "Heineken Dutch Grand Prix": {
+        "fecha": "2025-08-31",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-08-30 15:00",
+            "Carrera": "2025-08-31 15:00"
+        }
+    },
+    "Pirelli Italian Grand Prix": {
+        "fecha": "2025-09-07",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-09-06 16:00",
+            "Carrera": "2025-09-07 15:00"
+        }
+    },
+    "Singapore Airlines Singapore Grand Prix": {
+        "fecha": "2025-09-21",  # Mantienes la fecha original
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-10-04 15:00",
+            "Carrera": "2025-10-05 14:00"
+        }
+    },
+    "Lenovo United States Grand Prix": {
+        "fecha": "2025-10-26",  # Mantienes la fecha original
+        "sprint": True,
+        "sesiones": {
+            "Qualy Sprint": "2025-10-17 23:30",
+            "Sprint": "2025-10-18 19:00",
+            "Qualy": "2025-10-18 23:00",
+            "Carrera": "2025-10-19 21:00"
+        }
+    },
+    "Mexico City Grand Prix": {
+        "fecha": "2025-11-02",  # Mantienes la fecha original
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-10-25 23:00",
+            "Carrera": "2025-10-26 21:00"
+        }
+    },
+    "Lenovo São Paulo Grand Prix": {
+        "fecha": "2025-11-16",  # Mantienes la fecha original
+        "sprint": True,
+        "sesiones": {
+            "Qualy Sprint": "2025-11-07 19:30",
+            "Sprint": "2025-11-08 15:00",
+            "Qualy": "2025-11-08 19:00",
+            "Carrera": "2025-11-09 18:00"
+        }
+    },
+    "Qatar Airways Qatar Grand Prix": {
+        "fecha": "2025-11-30",
+        "sprint": True,
+        "sesiones": {
+            "Qualy Sprint": "2025-11-28 18:30",
+            "Sprint": "2025-11-29 15:00",
+            "Qualy": "2025-11-29 19:00",
+            "Carrera": "2025-11-30 17:00"
+        }
+    },
+    "Etihad Airways Abu Dhabi Grand Prix": {
+        "fecha": "2025-12-07",
+        "sprint": False,
+        "sesiones": {
+            "Qualy": "2025-12-06 15:00",
+            "Carrera": "2025-12-07 14:00"
+        }
+    }
 }
 
 pilotos = [
@@ -80,12 +247,23 @@ def calculate_scores():
         ]
         if not result.empty:
             result = result.iloc[0]
-            points = sum([6 if pred[f"P{i+1}"] == result[f"P{i+1}"] else (2 if pred[f"P{i+1}"] in result.values else 0) for i in range(3)])
+            points = 0
+            # 6 puntos si acierta exacto, 2 si el piloto predicho está en otro puesto del top 3
+            for i in range(3):
+                if pred[f"P{i+1}"] == result[f"P{i+1}"]:
+                    points += 6
+                elif pred[f"P{i+1}"] in [result["P1"], result["P2"], result["P3"]]:
+                    points += 2
+            # Bonus 10 si acierta todo el top 3 en orden
             if points == 18:
-                points += 10  # Bonus por acertar todo
-            if pred["Sesión"] == "Sprint":
+                points += 10
+            
+            # Mitad de puntos en Sprint o Qualy Sprint
+            if pred["Sesión"] in ["Sprint", "Qualy Sprint"]:
                 points /= 2
+            
             scores[pred["Jugador"]] = scores.get(pred["Jugador"], 0) + points
+    
     return pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
 
 # Función para guardar una predicción de Gran Premio
@@ -120,15 +298,27 @@ menu = st.sidebar.radio("Panel", ["Grandes Premios", "Mundial", "Resultados y Pu
 
 if menu == "Grandes Premios":
     st.subheader("Grand Prix weekend")
+    
+    # Seleccionar jugador y GP
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"])
     gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()))
-    sesion = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"])
     
-    p1 = st.selectbox("P1", pilotos)
-    p2 = st.selectbox("P2", pilotos)
-    p3 = st.selectbox("P3", pilotos)
+    # Obtenemos las sesiones reales definidas en el diccionario para ese GP
+    sesiones_disponibles = list(grandes_premios[gran_premio]["sesiones"].keys())
+    # Escogemos la sesión de entre las disponibles
+    sesion = st.radio("Sesión", sesiones_disponibles)
     
-    if st.button("GUARDAR"):
+    # Determinar si la sesión está abierta o no (en función de la hora actual)
+    session_str = grandes_premios[gran_premio]["sesiones"][sesion]
+    session_datetime = datetime.datetime.strptime(session_str, "%Y-%m-%d %H:%M")
+    session_abierta = datetime.datetime.now() < session_datetime
+    
+    # Deshabilitar la entrada si la sesión ya comenzó
+    p1 = st.selectbox("P1", pilotos, disabled=not session_abierta)
+    p2 = st.selectbox("P2", pilotos, disabled=not session_abierta)
+    p3 = st.selectbox("P3", pilotos, disabled=not session_abierta)
+    
+    if st.button("GUARDAR", disabled=not session_abierta):
         save_prediction(jugador, gran_premio, sesion, p1, p2, p3)
         st.success("Predicción guardada")
     
@@ -159,7 +349,10 @@ elif menu == "Mundial":
 elif menu == "Resultados y Puntos":
     st.subheader("Introducir Resultados Reales")
     result_gran_premio = st.selectbox("Gran Premio", list(grandes_premios.keys()), key="result_gp")
-    result_sesion = st.radio("Sesión", ["Qualy", "Qualy Sprint", "Sprint", "Carrera"], key="result_sesion")
+    # Para los resultados, también podemos basarnos en las sesiones definidas en el diccionario
+    result_sesiones_disponibles = list(grandes_premios[result_gran_premio]["sesiones"].keys())
+    result_sesion = st.radio("Sesión", result_sesiones_disponibles, key="result_sesion")
+    
     result_p1 = st.selectbox("P1", pilotos, key="result_p1")
     result_p2 = st.selectbox("P2", pilotos, key="result_p2")
     result_p3 = st.selectbox("P3", pilotos, key="result_p3")
