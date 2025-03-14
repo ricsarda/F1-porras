@@ -90,9 +90,9 @@ def calculate_scores():
 
 # Interfaz principal
 st.title("🏎️ F1 Fantasy 2025")
-menu = st.sidebar.radio("Panel", ["Grandes Premios", "F1 World Championship", "Resultados y Puntos"])
+menu = st.sidebar.radio("Panel", ["Grandes Premios", "Mundial", "Resultados y Puntos"])
 
-if menu == "Mundial":
+elif menu == "Mundial":
     st.subheader("F1 World Championship")
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
     categoria = st.radio("Categoría", ["World Drivers Championships", "World Constructors Championshipp"], key="global_categoria")
