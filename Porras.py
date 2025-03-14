@@ -325,28 +325,54 @@ if menu == "Grandes Premios":
     
     st.subheader("📊 Predicciones de Gran Premio")
     st.dataframe(data["predictions"])
-
+    
 elif menu == "Mundial":
     st.subheader("F1 World Championship")
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
     categoria = st.radio("Categoría", ["World Drivers Championship", "World Constructors Championship"], key="global_categoria")
     
-    # Importamos el componente de drag and drop
-    from streamlit_sortable import sortable  # Asegúrate de instalar streamlit-sortable con pip
-    
     if categoria == "World Drivers Championship":
         st.markdown("### Predicción del orden completo de **21 pilotos**")
-        # Se muestra la lista de pilotos que se puede reordenar
-        ordered_drivers = sortable(pilotos, key="drivers_order", height=500)
+        available_drivers = pilotos.copy()
+        selected_drivers = []
+        # Dividimos en 3 columnas, 7 posiciones cada una.
+        cols = st.columns(3)
+        positions_per_column = 7
+        
+        # Recorremos cada columna
+        for col_idx, col in enumerate(cols):
+            with col:
+                for i in range(positions_per_column):
+                    pos = col_idx * positions_per_column + i + 1
+                    # Se muestran solo los pilotos aún disponibles
+                    choices = available_drivers.copy()
+                    option = st.selectbox(f"Posición {pos}", choices, key=f"driver_{pos}")
+                    selected_drivers.append(option)
+                    available_drivers.remove(option)
+        
         if st.button("GUARDAR", key="global_guardar_drivers"):
-            # Guardamos únicamente los 21 primeros (en teoría, la lista tiene 21 elementos)
-            save_global_prediction(jugador, categoria, ordered_drivers[:21])
+            save_global_prediction(jugador, categoria, selected_drivers)
             st.success("Predicción global (pilotos) guardada")
+    
     else:
         st.markdown("### Predicción del orden completo de **10 equipos**")
-        ordered_teams = sortable(equipos, key="teams_order", height=300)
+        available_teams = equipos.copy()
+        selected_teams = []
+        # Dividimos en 2 columnas, 5 posiciones cada una.
+        cols = st.columns(2)
+        positions_per_column = 5
+        
+        for col_idx, col in enumerate(cols):
+            with col:
+                for i in range(positions_per_column):
+                    pos = col_idx * positions_per_column + i + 1
+                    choices = available_teams.copy()
+                    option = st.selectbox(f"Posición {pos}", choices, key=f"team_{pos}")
+                    selected_teams.append(option)
+                    available_teams.remove(option)
+                    
         if st.button("GUARDAR", key="global_guardar_teams"):
-            save_global_prediction(jugador, categoria, ordered_teams[:10])
+            save_global_prediction(jugador, categoria, selected_teams)
             st.success("Predicción global (equipos) guardada")
     
     st.subheader("📊 Mundial")
