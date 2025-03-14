@@ -112,7 +112,7 @@ if menu == "Grandes Premios":
 elif menu == "Mundial":
     st.subheader("F1 World Championship")
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
-    categoria = st.radio("Categoría", ["World Drivers Championships", "World Constructors Championshipp"], key="global_categoria")
+    categoria = st.radio("Categoría", ["World Drivers Championship", "World Constructors Championship"], key="global_categoria")
     
     if categoria == "World Drivers Championship":
         p1 = st.selectbox("P1", pilotos, key="global_p1")
