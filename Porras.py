@@ -267,8 +267,13 @@ def calculate_scores():
     
     return pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
 
-# Función para guardar una predicción de Gran Premio
 def save_prediction(jugador, gran_premio, sesion, p1, p2, p3):
+    # Elimina cualquier predicción previa del mismo jugador, GP y sesión
+    data["predictions"] = data["predictions"][
+        ~((data["predictions"]["Jugador"] == jugador) &
+          (data["predictions"]["Gran Premio"] == gran_premio) &
+          (data["predictions"]["Sesión"] == sesion))
+    ]
     nueva_prediccion = pd.DataFrame({
         "Jugador": [jugador],
         "Gran Premio": [gran_premio],
