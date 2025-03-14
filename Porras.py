@@ -114,7 +114,7 @@ elif menu == "Mundial":
     jugador = st.selectbox("Gambler", ["Maggi", "Pié", "Ric"], key="global_jugador")
     categoria = st.radio("Categoría", ["World Drivers Championships", "World Constructors Championshipp"], key="global_categoria")
     
-    if categoria == "World Drivers & Constructors Championship":
+    if categoria == "World Drivers Championship":
         p1 = st.selectbox("P1", pilotos, key="global_p1")
         p2 = st.selectbox("P2", pilotos, key="global_p2")
         p3 = st.selectbox("P3", pilotos, key="global_p3")
