@@ -7,6 +7,12 @@ import os
 # Configuración inicial
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
+manual_scores = {
+    "Maggi": 8,
+    "Pié": 12,
+    "Ric": 20
+}
+
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
     "Rolex Australian Grand Prix": {
@@ -264,7 +270,8 @@ def calculate_scores():
                 points /= 2
             
             scores[pred["Jugador"]] = scores.get(pred["Jugador"], 0) + points
-    
+    for jugador, puntos_manual in manual_scores.items():
+        scores[jugador] = scores.get(jugador, 0) + puntos_manual    
     return pd.DataFrame(list(scores.items()), columns=["Jugador", "Puntos Totales"])
 
 def save_prediction(jugador, gran_premio, sesion, p1, p2, p3):
