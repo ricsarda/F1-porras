@@ -7,11 +7,14 @@ import os
 # Configuración inicial
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
+
+#Score de australia
 manual_scores = {
     "Maggi": 8,
     "Pié": 12,
     "Ric": 20
 }
+#Score despues de la qualy de china: Ric:27, Pie:23, Maggi:22
 
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
