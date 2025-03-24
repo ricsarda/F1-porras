@@ -15,6 +15,7 @@ manual_scores = {
     "Ric": 36
 }
 #Score despues de la carrera de china: Ric:36, Pie:33, Maggi:50
+#Score despues de la carrera de australia: Ric:20, Pie:12, Maggi:8
 
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
