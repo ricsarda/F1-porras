@@ -10,12 +10,12 @@ st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
 #Score de australia
 manual_scores = {
-    "Maggi": 50,
-    "Pié": 33,
-    "Ric": 36
+    "Maggi": 78,
+    "Pié": 41,
+    "Ric": 48
 }
-#Score despues de la carrera de china: Ric:36, Pie:33, Maggi:50
-#Score despues de la carrera de australia: Ric:20, Pie:12, Maggi:8
+#Score despues de la carrera de Japon: Ric:48, Pie:41, Maggi:78
+#Score despues de la carrera de China: Ric:36, Pie:33, Maggi:50
 
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
