@@ -19,40 +19,6 @@ manual_scores = {
 
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
-    "Rolex Australian Grand Prix": {
-        "fecha": "2025-03-16",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-03-15 06:00",
-            "Carrera": "2025-03-16 05:00"
-        }
-    },
-    "Heineken Chinese Grand Prix": {
-        "fecha": "2025-03-23",
-        "sprint": True,
-        "sesiones": {
-            "Qualy Sprint": "2025-03-21 08:30",
-            "Sprint": "2025-03-22 04:00",
-            "Qualy": "2025-03-22 08:00",
-            "Carrera": "2025-03-23 08:00"
-        }
-    },
-    "Honda Japanese Grand Prix": {
-        "fecha": "2025-04-06",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-04-05 08:00",
-            "Carrera": "2025-04-06 07:00"
-        }
-    },
-    "Gulf Air Bahrain Grand Prix": {
-        "fecha": "2025-04-13",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-04-12 18:00",
-            "Carrera": "2025-04-13 17:00"
-        }
-    },
     "STC Saudi Arabian Grand Prix": {
         "fecha": "2025-04-20",
         "sprint": False,
