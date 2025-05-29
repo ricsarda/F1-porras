@@ -8,51 +8,17 @@ import os
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
 
-#Score de australia
+#Score de monaco
 manual_scores = {
-    "Maggi": 86,
-    "Pié": 69,
-    "Ric": 60,
+    "Maggi": 150,
+    "Pié": 167,
+    "Ric": 180,
 }
 #Score despues de la carrera de China: Ric:36, Pie:33, Maggi:50
 #Score despues de la carrera de Barhein: Ric:60, Pie:69, Maggi:86
 
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
-    "STC Saudi Arabian Grand Prix": {
-        "fecha": "2025-04-20",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-04-19 19:00",
-            "Carrera": "2025-04-20 19:00"
-        }
-    },
-    "Crypto.com Miami Grand Prix": {
-        "fecha": "2025-05-04",
-        "sprint": True,
-        "sesiones": {
-            "Qualy Sprint": "2025-05-02 22:30",
-            "Sprint": "2025-05-03 18:00",
-            "Qualy": "2025-05-03 22:00",
-            "Carrera": "2025-05-04 22:00"
-        }
-    },
-    "Qatar Airways Emilia-Romagna Grand Prix": {
-        "fecha": "2025-05-18",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-05-17 16:00",
-            "Carrera": "2025-05-18 15:00"
-        }
-    },
-    "Monaco Grand Prix": {
-        "fecha": "2025-05-25",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-05-24 16:00",
-            "Carrera": "2025-05-25 15:00"
-        }
-    },
     "Pirelli Spanish Grand Prix": {
         "fecha": "2025-06-01",
         "sprint": False,
