@@ -10,8 +10,8 @@ st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
 #Score de Canada
 manual_scores = {
-    "Maggi": 196,
-    "Pié": 200,
+    "Maggi": 200,
+    "Pié": 204,
     "Ric": 204,
 }
 #Score despues de la carrera de China: Ric:36, Pie:33, Maggi:50
