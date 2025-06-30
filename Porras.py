@@ -19,31 +19,6 @@ manual_scores = {
 
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
-    "Pirelli Spanish Grand Prix": {
-        "fecha": "2025-06-01",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-05-31 16:00",
-            "Carrera": "2025-06-01 15:00"
-        }
-    },
-    "AWS Canadian Grand Prix": {
-        "fecha": "2025-06-15",
-        "sprint": False,
-        "sesiones": {
-            "Qualy": "2025-06-14 22:00",
-            "Carrera": "2025-06-15 20:00"
-        }
-    },
-    "Qatar Airways Austrian Grand Prix": {
-        "fecha": "2025-06-29",
-        "sprint": True,  # Marcado como True en el código original
-        "sesiones": {
-            "Qualy": "2025-06-28 16:00",
-            "Carrera": "2025-06-29 15:00"
-            # No se han proporcionado datos para "Qualy Sprint" o "Sprint"
-        }
-    },
     "Aramco British Grand Prix": {
         "fecha": "2025-07-06",
         "sprint": False,
