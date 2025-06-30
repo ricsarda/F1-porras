@@ -8,11 +8,11 @@ import os
 st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
 
-#Score de Canada
+#Score de Austria
 manual_scores = {
-    "Maggi": 200,
-    "Pié": 204,
-    "Ric": 204,
+    "Maggi": 216,
+    "Pié": 224,
+    "Ric": 234,
 }
 #Score despues de la carrera de China: Ric:36, Pie:33, Maggi:50
 #Score despues de la carrera de Barhein: Ric:60, Pie:69, Maggi:86
