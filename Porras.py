@@ -10,9 +10,9 @@ st.set_page_config(page_title="F1 Fantasy", layout="wide")
 
 #Score de Austria
 manual_scores = {
-    "Maggi": 216,
-    "Pié": 224,
-    "Ric": 234,
+    "Maggi": 230,
+    "Pié": 232,
+    "Ric": 248,
 }
 #Score despues de la carrera de China: Ric:36, Pie:33, Maggi:50
 #Score despues de la carrera de Barhein: Ric:60, Pie:69, Maggi:86
