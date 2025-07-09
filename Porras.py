@@ -16,7 +16,7 @@ manual_scores = {
 }
 #Score despues de la carrera de China: Ric:36, Pie:33, Maggi:50
 #Score despues de la carrera de Barhein: Ric:60, Pie:69, Maggi:86
-
+#Score despues de la carrera de Barhein: Ric:248, Pie:232, Maggi:230
 # Diccionario actualizado de Grandes Premios con horarios de cada sesión
 grandes_premios = {
     "Aramco British Grand Prix": {
